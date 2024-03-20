@@ -1,12 +1,10 @@
 import Joi from "joi";
+import { errorMessageTemplate } from "../helpers/errorMessagesTemplate.js";
 
 const emailRegex = new RegExp("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
 
 export const registerSchema = Joi.object({
-  name: Joi.string().required().messages({
-    "string.empty": '"name" cannot be an empty field',
-    "any.required": 'missing required field "name"',
-  }),
+  name: Joi.string().required().messages(errorMessageTemplate("Name")),
   email: Joi.string().required().pattern(emailRegex).messages({
     "string.pattern.base": "Incorrect email format",
     "string.empty": '"email" cannot be an empty field',
@@ -25,10 +23,7 @@ export const loginSchema = Joi.object({
     "string.empty": '"email" cannot be an empty field',
     "any.required": 'missing required field "email"',
   }),
-  password: Joi.string().required().messages({
-    "string.empty": '"password" cannot be an empty field',
-    "any.required": 'missing required field "password"',
-  }),
+  password: Joi.string().required().messages(errorMessageTemplate("Password")),
 });
 
 // export const updateUserSchema = Joi.object({})

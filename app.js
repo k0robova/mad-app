@@ -3,6 +3,8 @@ import morgan from "morgan";
 import cors from "cors";
 import dotenv from "dotenv";
 import authRouter from "./routes/authRouter.js";
+import groupRouter from "./routes/groupRouter.js";
+import lessonRouter from "./routes/lessonRouter.js";
 
 dotenv.config();
 
@@ -13,6 +15,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/users", authRouter);
+app.use("/groups", groupRouter);
+app.use("/lessons", lessonRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
