@@ -2,6 +2,7 @@ import { Schema, model } from "mongoose";
 import bcryptjs from "bcryptjs";
 
 const emailRegex = new RegExp("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
+const themeList = ["dark", "light"];
 
 const userSchema = new Schema(
   {
@@ -18,6 +19,11 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: [true, "Set password for user"],
+    },
+    theme: {
+      type: String,
+      enum: themeList,
+      default: "dark",
     },
     avatarURL: { type: String, default: "" },
     token: { type: String, default: "" },

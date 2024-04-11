@@ -27,7 +27,7 @@ export const loginUser = ctrlWrapper(async (req, res) => {
   const user = await authServices.emailUnique(email);
 
   if (!user) {
-    throw HttpError(409, "User with such email already in use");
+    throw HttpError(409, "User with this email not registrated");
   }
 
   const isValidPassword = await user.comparePassword(password);
@@ -60,6 +60,25 @@ export const logoutUser = ctrlWrapper(async (req, res) => {
   });
 });
 
-// export const updateUser = ctrlWrapper(async (req, res) => {
+// додати перевірки на дані які оновлюються
+export const updateUser = ctrlWrapper(async (req, res) => {
+  const { _id } = req.user;
+  const updatedUser = await authServices.updateUserDB(_id, req.body);
 
-// });
+  res.status(200).json({
+    msg: "Success!",
+    user: updatedUser,
+  });
+});
+
+export const updateUserTheme = ctrlWrapper(async (req, res) => {
+  const { _id: idOwner } = req.user;
+  const { theme } = req.body;
+
+  const updatedTheme = await authServices.updateThemeDB(idOwner, theme);
+
+  res.status(200).json({
+    email: updatedTheme.email,
+    theme: updatedTheme.theme,
+  });
+});

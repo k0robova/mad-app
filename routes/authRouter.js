@@ -18,8 +18,19 @@ authRouter.post(
 );
 authRouter.post("/logout", authenticate, authControllers.logoutUser);
 authRouter.get("/current", authenticate, authControllers.getCurrentUser);
-// authRouter.put(
-//   "/update",
-// );
+authRouter.put(
+  "/update",
+  authenticate,
+  validateBody(userSchema.updateUserSchema),
+  // upload.single("avatarURL"),
+  authControllers.updateUser
+);
+
+authRouter.patch(
+  "/theme",
+  authenticate,
+  validateBody(userSchema.updateThemeSchema),
+  authControllers.updateUserTheme
+);
 
 export default authRouter;

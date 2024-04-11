@@ -1,3 +1,4 @@
+import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { UserModel } from "../models/userModel.js";
 import dotenv from "dotenv";
@@ -45,4 +46,26 @@ export const loginUserDB = async (userId) => {
 export const logoutUserDB = async (userId, token) => {
   const user = await UserModel.findByIdAndUpdate(userId, token);
   return user;
+};
+
+export const updateUserDB = async (userId, userData) => {
+  if (userData.password) {
+    userData.password = await bcryptjs.hash(userData.password, 10);
+  }
+
+  const updateUser = await UserModel.findByIdAndUpdate(userId, userData, {
+    new: true,
+  });
+
+  updateUser.password = undefined;
+  return updateUser;
+};
+
+export const updateThemeDB = async (idOwner, theme) => {
+  const updateTheme = await UserModel.findOneAndUpdate(
+    idOwner,
+    { theme },
+    { new: true }
+  );
+  return updateTheme;
 };
