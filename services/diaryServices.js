@@ -1,23 +1,23 @@
 import { HttpError } from "../helpers/HttpError.js";
-import { DaybookModel } from "../models/daybookModel.js";
+import { diaryModel } from "../models/diaryModel.js";
 
-export const fetchDaybookDB = async (owner) => {
-  const daybook = await DaybookModel.find({ owner });
+export const fetchDiaryDB = async (owner) => {
+  const diary = await diaryModel.find({ owner });
 
-  if (!daybook) {
+  if (!diary) {
     throw HttpError(404, "Note for this user not found");
   }
 
-  return daybook;
+  return diary;
 };
 
 export const addNoteDB = async (owner, body) => {
-  const newNote = await DaybookModel.create({ ...body, owner });
+  const newNote = await diaryModel.create({ ...body, owner });
   return newNote;
 };
 
 export const updateNoteDB = async (id, owner, body) => {
-  const updatedNote = await DaybookModel.findOneAndUpdate(
+  const updatedNote = await diaryModel.findOneAndUpdate(
     { _id: id, owner },
     body,
     { new: true }
@@ -30,7 +30,7 @@ export const updateNoteDB = async (id, owner, body) => {
 };
 
 export const deleteNoteDB = async (id, owner) => {
-  const deletedNote = await DaybookModel.findOneAndDelete({ _id: id, owner });
+  const deletedNote = await diaryModel.findOneAndDelete({ _id: id, owner });
 
   if (!deletedNote) {
     throw HttpError(404, `Note  with id ${id} not found`);

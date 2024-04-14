@@ -6,7 +6,7 @@ import authRouter from "./routes/authRouter.js";
 import groupRouter from "./routes/groupRouter.js";
 import lessonRouter from "./routes/lessonRouter.js";
 import therapyRouter from "./routes/therapyRouter.js";
-import daybookRouter from "./routes/daybookRouter.js";
+import diaryRouter from "./routes/diaryRouter.js";
 
 dotenv.config();
 
@@ -21,7 +21,7 @@ app.use("/groups", groupRouter);
 app.use("/lessons", lessonRouter);
 // app.use('/quotes', quoteRouter)
 app.use("/therapy", therapyRouter);
-app.use("/daybook", daybookRouter);
+app.use("/diary", diaryRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });

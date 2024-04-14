@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const daybookSchema = new Schema(
+const diarySchema = new Schema(
   {
     text: {
       type: String,
@@ -15,4 +15,4 @@ const daybookSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-export const DaybookModel = model("Daybook", daybookSchema);
+export const diaryModel = model("Diary", diarySchema);

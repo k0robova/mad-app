@@ -1,13 +1,13 @@
 import { HttpError } from "../helpers/HttpError.js";
 import { ctrlWrapper } from "../helpers/ctrlWrapper.js";
-import * as notesServices from "../services/daybookServices.js";
+import * as notesServices from "../services/diaryServices.js";
 
-export const getDaybook = ctrlWrapper(async (req, res) => {
+export const getDiary = ctrlWrapper(async (req, res) => {
   const { _id: owner } = req.user;
 
-  const daybook = await notesServices.fetchDaybookDB(owner);
+  const diary = await notesServices.fetchDiaryDB(owner);
 
-  res.json(daybook);
+  res.json(diary);
 });
 
 export const createNote = ctrlWrapper(async (req, res) => {

@@ -1,7 +1,7 @@
 import Joi from "joi";
 import { errorMessageTemplate } from "../helpers/errorMessagesTemplate.js";
 
-export const createDaybookSchema = Joi.object({
+export const createDiarySchema = Joi.object({
   text: Joi.string()
     .required()
     .label("Text")
@@ -12,7 +12,7 @@ export const createDaybookSchema = Joi.object({
     .messages(errorMessageTemplate("Id")),
 });
 
-export const updateDaybookSchema = Joi.object({
+export const updateDiarySchema = Joi.object({
   text: Joi.string()
     .required()
     .label("Text")
