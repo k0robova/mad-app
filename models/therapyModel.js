@@ -1,17 +1,17 @@
 import { Schema, model } from "mongoose";
 
-const groupSchema = new Schema(
+const therapySchema = new Schema(
   {
-    name: {
+    title: {
       type: String,
       required: true,
     },
-    icon: {
+    description: {
       type: String,
-      default: "1",
+      required: true,
     },
   },
   { versionKey: false, timestamps: true }
 );
 
-export const GroupModel = model("Groups", groupSchema);
+export const TherapyModel = model("Therapy", therapySchema);
