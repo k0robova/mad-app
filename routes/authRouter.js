@@ -3,11 +3,13 @@ import { authenticate } from "../middlewares/authenticate.js";
 import { validateBody } from "../middlewares/validateBody.js";
 import * as authControllers from "../controllers/authControllers.js";
 import * as userSchema from "../schemas/userSchema.js";
+import upload from "../middlewares/upload.js";
 
 const authRouter = express.Router();
 
 authRouter.post(
   "/register",
+  upload.single("avatarURL"),
   validateBody(userSchema.registerSchema),
   authControllers.registerUser
 );
@@ -22,7 +24,7 @@ authRouter.put(
   "/update",
   authenticate,
   validateBody(userSchema.updateUserSchema),
-  // upload.single("avatarURL"),
+  upload.single("avatarURL"),
   authControllers.updateUser
 );
 

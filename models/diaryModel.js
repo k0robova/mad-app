@@ -2,7 +2,11 @@ import { Schema, model } from "mongoose";
 
 const diarySchema = new Schema(
   {
-    text: {
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
       type: String,
       required: true,
     },

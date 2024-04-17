@@ -15,6 +15,7 @@ export const registerSchema = Joi.object({
     "string.min": '"password" should have a minimum length of 6',
     "any.required": 'missing required field "password"',
   }),
+  avatar_url: Joi.any(),
 });
 
 export const loginSchema = Joi.object({

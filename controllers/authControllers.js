@@ -1,3 +1,4 @@
+import fs from "fs";
 import { HttpError } from "../helpers/HttpError.js";
 import { ctrlWrapper } from "../helpers/ctrlWrapper.js";
 import * as authServices from "../services/authServices.js";
@@ -5,6 +6,7 @@ import * as authServices from "../services/authServices.js";
 export const registerUser = ctrlWrapper(async (req, res) => {
   const { name, email } = req.body;
   const ifUserExists = await authServices.emailUnique(email);
+  let avatarURL = "";
 
   if (ifUserExists) {
     throw HttpError(409, "User with such email already in use");
@@ -12,11 +14,17 @@ export const registerUser = ctrlWrapper(async (req, res) => {
 
   const newUser = await authServices.registerUserDB(req.body);
 
+  if (req.file) {
+    const { path: tmpUpload } = req.file;
+    avatarURL = await authServices.saveAvatar(tmpUpload, newUser._id);
+  }
+
   res.status(201).json({
     token: newUser.token,
     user: {
       name,
       email,
+      avatarURL,
     },
   });
 });
@@ -63,12 +71,24 @@ export const logoutUser = ctrlWrapper(async (req, res) => {
 // додати перевірки на дані які оновлюються
 export const updateUser = ctrlWrapper(async (req, res) => {
   const { _id } = req.user;
-  const updatedUser = await authServices.updateUserDB(_id, req.body);
 
-  res.status(200).json({
-    msg: "Success!",
-    user: updatedUser,
-  });
+  let avatarURL;
+
+  if (req.file) {
+    const { path: tmpUpload } = req.file;
+    avatarURL = await authServices.saveAvatar(tmpUpload, _id);
+  }
+  // Перевірка наявності даних користувача в запиті
+  if (req.body) {
+    const { name, email, password } = req.body;
+    const updatedUser = await authServices.updateUserDB(_id, {
+      name,
+      email,
+      password,
+      avatarURL,
+    });
+    res.status(200).json(updatedUser);
+  }
 });
 
 export const updateUserTheme = ctrlWrapper(async (req, res) => {
