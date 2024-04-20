@@ -1,6 +1,7 @@
 import { HttpError } from "../helpers/HttpError.js";
 import { ctrlWrapper } from "../helpers/ctrlWrapper.js";
 import * as authServices from "../services/authServices.js";
+import * as fs from "fs/promises";
 
 export const registerUser = ctrlWrapper(async (req, res) => {
   const { name, email } = req.body;
@@ -15,6 +16,7 @@ export const registerUser = ctrlWrapper(async (req, res) => {
   if (req.file) {
     const { path: tmpUpload } = req.file;
     avatarURL = await authServices.saveAvatar(tmpUpload, newUser._id);
+    fs.unlink(tmpUpload);
   }
 
   res.status(201).json({
@@ -75,6 +77,7 @@ export const updateUser = ctrlWrapper(async (req, res) => {
   if (req.file) {
     const { path: tmpUpload } = req.file;
     avatarURL = await authServices.saveAvatar(tmpUpload, _id);
+    fs.unlink(tmpUpload);
   }
   // Перевірка наявності даних користувача в запиті
   if (req.body) {

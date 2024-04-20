@@ -1,5 +1,6 @@
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
+
 import { v2 as cloudinary } from "cloudinary";
 import dotenv from "dotenv";
 import { nanoid } from "nanoid";
@@ -89,10 +90,6 @@ export const updateThemeDB = async (idOwner, theme) => {
 };
 
 export const saveAvatar = async (tmpUpload, _id) => {
-  //   cloud_name: "dna5uh3r0",
-  //     api_key: "116844259184423",
-  //       api_secret: "aZa8sdqU44SyirU3ogCS0VKQLSY",
-
   cloudinary.config({
     cloud_name: CLOUDINARY_CLOUD_NAME,
     api_key: CLOUDINARY_API_KEY,
