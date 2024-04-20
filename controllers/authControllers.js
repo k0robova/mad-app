@@ -1,4 +1,3 @@
-import fs from "fs";
 import { HttpError } from "../helpers/HttpError.js";
 import { ctrlWrapper } from "../helpers/ctrlWrapper.js";
 import * as authServices from "../services/authServices.js";
@@ -13,7 +12,6 @@ export const registerUser = ctrlWrapper(async (req, res) => {
   }
 
   const newUser = await authServices.registerUserDB(req.body);
-
   if (req.file) {
     const { path: tmpUpload } = req.file;
     avatarURL = await authServices.saveAvatar(tmpUpload, newUser._id);
@@ -102,3 +100,19 @@ export const updateUserTheme = ctrlWrapper(async (req, res) => {
     theme: updatedTheme.theme,
   });
 });
+
+export const verifyEmail = async (req, res) => {
+  const { verificationToken } = req.params;
+
+  await authServices.verifyEmailDB(verificationToken);
+
+  res.status(200).json({ message: "Verification successful" });
+};
+
+export const resendVerifyEmail = async (req, res) => {
+  const { email } = req.user;
+
+  await authServices.resendVerifyEmailDB(email);
+
+  res.status(200).json({ message: "Verification email sent" });
+};
