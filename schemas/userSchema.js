@@ -48,3 +48,16 @@ export const updateThemeSchema = Joi.object({
     "any.required": 'missing required field "theme"',
   }),
 });
+
+export const updatePassword = Joi.object({
+  password: Joi.string().required().min(6).messages({
+    "string.empty": '"password" cannot be an empty field',
+    "string.min": '"password" should have a minimum length of 6',
+    "any.required": 'missing required field "password"',
+  }),
+  newPassword: Joi.string().required().min(6).messages({
+    "string.empty": '"password" cannot be an empty field',
+    "string.min": '"password" should have a minimum length of 6',
+    "any.required": 'missing required field "password"',
+  }),
+});

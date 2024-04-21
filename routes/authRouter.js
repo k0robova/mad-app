@@ -29,6 +29,12 @@ authRouter.put(
   upload.single("avatarURL"),
   authControllers.updateUser
 );
+authRouter.patch(
+  "/updatePass",
+  authenticate,
+  validateBody(userSchema.updatePassword),
+  authControllers.updatePassword
+);
 
 authRouter.patch(
   "/theme",

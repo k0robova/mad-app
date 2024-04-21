@@ -1,6 +1,6 @@
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-
+import * as fs from "fs/promises";
 import { v2 as cloudinary } from "cloudinary";
 import dotenv from "dotenv";
 import { nanoid } from "nanoid";
@@ -89,13 +89,14 @@ export const updateThemeDB = async (idOwner, theme) => {
   return updateTheme;
 };
 
-export const saveAvatar = async (tmpUpload, _id) => {
+export const saveAvatar = async (tmpUpload) => {
   cloudinary.config({
     cloud_name: CLOUDINARY_CLOUD_NAME,
     api_key: CLOUDINARY_API_KEY,
     api_secret: CLOUDINARY_API_SECRET,
   });
   const result = await cloudinary.uploader.upload(tmpUpload);
+  await fs.unlink(tmpUpload);
   return result.url;
 };
 
@@ -111,7 +112,7 @@ export const verifyEmailDB = async (token) => {
     verificationToken: "",
   });
 
-  return true;
+  return;
 };
 
 export const resendVerifyEmailDB = async (email) => {
@@ -133,5 +134,19 @@ export const resendVerifyEmailDB = async (email) => {
 
   await sendEmail(verifyEmail);
 
-  return true;
+  return;
+};
+
+export const resetPasswordDB = async (email) => {};
+
+export const updatePasswordDB = async (_id, password) => {
+  const newPassword = await bcryptjs.hash(password, 10);
+
+  const updatedPassword = await UserModel.findByIdAndUpdate(
+    _id,
+    { password: newPassword },
+    { new: true }
+  );
+
+  return;
 };
