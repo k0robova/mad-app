@@ -61,3 +61,10 @@ export const updatePassword = Joi.object({
     "any.required": 'missing required field "password"',
   }),
 });
+
+export const emailSchema = Joi.object({
+  email: Joi.string().pattern(emailRegex).messages({
+    "string.pattern.base": "Incorrect email format",
+    "string.empty": '"email" cannot be an empty field',
+  }),
+});

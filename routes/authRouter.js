@@ -19,7 +19,12 @@ authRouter.post(
   authControllers.loginUser
 );
 authRouter.get("/verify/:verificationToken", authControllers.verifyEmail);
-authRouter.post("/verify", authenticate, authControllers.resendVerifyEmail);
+authRouter.post(
+  "/verify",
+  authenticate,
+  validateBody(userSchema.emailSchema),
+  authControllers.resendVerifyEmail
+);
 authRouter.post("/logout", authenticate, authControllers.logoutUser);
 authRouter.get("/current", authenticate, authControllers.getCurrentUser);
 authRouter.put(

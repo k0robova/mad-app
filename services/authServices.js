@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import { nanoid } from "nanoid";
 import { UserModel } from "../models/userModel.js";
 import { sendEmail } from "../helpers/sendEmail.js";
+import { HttpError } from "../helpers/HttpError.js";
 
 dotenv.config();
 const {
@@ -16,6 +17,7 @@ const {
   CLOUDINARY_API_SECRET,
 } = process.env;
 export const emailUnique = async (email) => await UserModel.findOne({ email });
+
 export const registerUserDB = async (userData) => {
   const verificationToken = nanoid();
 
@@ -27,7 +29,7 @@ export const registerUserDB = async (userData) => {
     id: user._id,
   };
 
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "12h" });
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "7d" });
 
   const newUser = await UserModel.findByIdAndUpdate(
     user._id,
@@ -37,8 +39,8 @@ export const registerUserDB = async (userData) => {
 
   const verifyEmail = {
     to: user.email,
-    subject: "verify email",
-    html: `<a target = "_black" href ='${BASE_URL}/users/verify/${verificationToken}'>Click verify email</a>`,
+    subject: "Verify your email",
+    html: `<a target = "_black" href ='${BASE_URL}/users/verify/${verificationToken}'>Click here to verify email</a>`,
   };
 
   await sendEmail(verifyEmail);
@@ -51,7 +53,7 @@ export const loginUserDB = async (userId) => {
     id: userId,
   };
 
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "12h" });
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "7d" });
 
   const newUser = await UserModel.findByIdAndUpdate(
     userId,
@@ -128,8 +130,8 @@ export const resendVerifyEmailDB = async (email) => {
 
   const verifyEmail = {
     to: email,
-    subject: "verify email",
-    html: `<a target = "_black" href ='${BASE_URL}/users/verify/${user.verificationToken}'>Click verify email</a>`,
+    subject: "Verify your email",
+    html: `<a target = "_black" href ='${BASE_URL}/users/verify/${user.verificationToken}'>Click here to verify email</a>`,
   };
 
   await sendEmail(verifyEmail);
@@ -142,7 +144,7 @@ export const resetPasswordDB = async (email) => {};
 export const updatePasswordDB = async (_id, password) => {
   const newPassword = await bcryptjs.hash(password, 10);
 
-  const updatedPassword = await UserModel.findByIdAndUpdate(
+  await UserModel.findByIdAndUpdate(
     _id,
     { password: newPassword },
     { new: true }
