@@ -50,6 +50,7 @@ export const loginUser = ctrlWrapper(async (req, res) => {
     user: {
       name: newUser.name,
       email,
+      avatarURL: newUser.avatarURL,
     },
   });
 });
