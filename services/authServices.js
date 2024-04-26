@@ -152,3 +152,8 @@ export const updatePasswordDB = async (_id, password) => {
 
   return;
 };
+export const updateAvatarDB = async (_id, avatarURL) => {
+  await UserModel.findByIdAndUpdate(_id, { avatarURL }, { new: true });
+
+  return;
+};

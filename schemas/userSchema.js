@@ -35,11 +35,6 @@ export const updateUserSchema = Joi.object({
     "string.pattern.base": "Incorrect email format",
     "string.empty": '"email" cannot be an empty field',
   }),
-  password: Joi.string().min(6).messages({
-    "string.empty": '"password" cannot be an empty field',
-    "string.min": '"password" should have a minimum length of 6',
-  }),
-  // avatar_url: Joi.any(),
 });
 
 export const updateThemeSchema = Joi.object({
@@ -67,4 +62,8 @@ export const emailSchema = Joi.object({
     "string.pattern.base": "Incorrect email format",
     "string.empty": '"email" cannot be an empty field',
   }),
+});
+
+export const avatarUpdateSchema = Joi.object({
+  avatarURL: Joi.any(),
 });

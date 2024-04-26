@@ -141,3 +141,17 @@ export const updatePassword = ctrlWrapper(async (req, res) => {
 
   res.status(200).json({ message: "Password has been updated" });
 });
+
+export const updateAvatar = ctrlWrapper(async (req, res) => {
+  const { _id } = req.user;
+  let avatarURL = "";
+
+  if (req.file) {
+    const { path: tmpUpload } = req.file;
+    avatarURL = await authServices.saveAvatar(tmpUpload);
+  }
+
+  await authServices.updateAvatarDB(_id, avatarURL);
+
+  res.status(200).json({ message: "Avatar has been updated" });
+});

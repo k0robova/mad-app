@@ -31,14 +31,21 @@ authRouter.put(
   "/update",
   authenticate,
   validateBody(userSchema.updateUserSchema),
-  upload.single("avatarURL"),
   authControllers.updateUser
 );
 authRouter.patch(
-  "/updatePass",
+  "/updatePassword",
   authenticate,
   validateBody(userSchema.updatePassword),
   authControllers.updatePassword
+);
+
+authRouter.patch(
+  "/updateAvatar",
+  authenticate,
+  validateBody(userSchema.avatarUpdateSchema),
+  upload.single("avatarURL"),
+  authControllers.updateAvatar
 );
 
 authRouter.patch(
