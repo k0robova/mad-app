@@ -128,31 +128,24 @@ export const resendVerifyEmailDB = async (email) => {
     throw HttpError(400, "Verification has already been passed");
   }
 
-  // const verifyEmail = {
-  //   to: email,
-  //   subject: "Підтвердження електронної пошти",
-  //   html: `
-  //   <p>Ласкаво просимо до нашої спільноти!</p>
-  //   <a target = "_black" href ='${BASE_URL}/users/verify/${user.verificationToken}'>Підтвердити зараз</a>
-  //    <p>Якщо ви не реєструвалися на нашому сайті, проігноруйте це повідомлення.</p>
-  //     <p>Дякуємо за реєстрацію!</p>
-  //      <p>З повагою, команда додатку Опора</p>
-
-  //   `,
-  // };
-
   const verifyEmail = {
     to: email,
     subject: "Підтвердження електронної пошти",
-    html: `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <p style="font-size: 18px; color: #333;">Ласкаво просимо до нашої спільноти!</p>
-      <a style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px; margin-bottom: 20px;" href="${BASE_URL}/users/verify/${user.verificationToken}">Підтвердити зараз</a>
-      <p style="font-size: 14px; color: #666;">Якщо ви не реєструвалися на нашому сайті, проігноруйте це повідомлення.</p>
-      <p style="font-size: 14px; color: #666;">Дякуємо за реєстрацію!</p>
-      <p style="font-size: 14px; color: #666;">З повагою, команда додатку Опора</p>
-    </div>
+    text: `
+    Ласкаво просимо до нашої спільноти! 
+    Будь ласка, скопіюйте та вставте це посилання у ваш браузер, щоб підтвердити вашу електронну адресу: ${BASE_URL}/users/verify/${user.verificationToken} 
+    Якщо ви не реєструвалися на нашому сайті, проігноруйте це повідомлення.
+    Дякуємо за реєстрацію!
+    З повагою, команда додатку Опора
   `,
+    html: `
+    <p>Ласкаво просимо до нашої спільноти!</p>
+    <a target = "_black" href ='${BASE_URL}/users/verify/${user.verificationToken}'>Підтвердити зараз</a>
+     <p>Якщо ви не реєструвалися на нашому сайті, проігноруйте це повідомлення.</p>
+      <p>Дякуємо за реєстрацію!</p>
+       <p>З повагою, команда додатку Опора</p>
+
+    `,
   };
 
   await sendEmail(verifyEmail);
