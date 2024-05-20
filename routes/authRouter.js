@@ -39,6 +39,21 @@ authRouter.patch(
   validateBody(userSchema.updatePassword),
   authControllers.updatePassword
 );
+authRouter.post("/forgotPassword", authControllers.forgotPassword);
+
+// otp = one time password
+authRouter.post(
+  "/restorePassword/:otp",
+  validateBody(userSchema.restorePassword),
+  authControllers.restorePassword
+);
+
+authRouter.delete(
+  "/deleteAccount",
+  authenticate,
+  // validateBody()
+  authControllers.deleteUser
+);
 
 authRouter.patch(
   "/updateAvatar",

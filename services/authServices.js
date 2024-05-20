@@ -40,7 +40,7 @@ export const registerUserDB = async (userData) => {
   const verifyEmail = {
     to: user.email,
     subject: "Verify your email",
-    html: `<a target = "_black" href ='${BASE_URL}/users/verify/${verificationToken}'>Click here to verify email</a>`,
+    html: `<a target = "_blank" href ='${BASE_URL}/users/verify/${verificationToken}'>Click here to verify email</a>`,
   };
 
   await sendEmail(verifyEmail);
@@ -153,8 +153,6 @@ export const resendVerifyEmailDB = async (email) => {
   return;
 };
 
-export const resetPasswordDB = async (email) => {};
-
 export const updatePasswordDB = async (_id, password) => {
   const newPassword = await bcryptjs.hash(password, 10);
 
@@ -166,8 +164,25 @@ export const updatePasswordDB = async (_id, password) => {
 
   return;
 };
+
+export const restorePasswordDB = async (otp, newPassword, email) => {
+  const user = await emailUnique(email);
+  if (!user) throw HttpError(400, "Token is invalid");
+
+  await user.comparePasswordResetToken(otp);
+
+  const hashedPassword = await bcryptjs.hash(newPassword, 10);
+  user.password = hashedPassword;
+  user.passwordResetToken = undefined;
+  user.passwordResetTokenExp = undefined;
+
+  await user.save();
+};
+
 export const updateAvatarDB = async (_id, avatarURL) => {
   await UserModel.findByIdAndUpdate(_id, { avatarURL }, { new: true });
 
   return;
 };
+
+export const hideUserDB = (id) => UserModel.findByIdAndDelete(id);

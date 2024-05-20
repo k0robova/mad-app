@@ -1,7 +1,11 @@
+import dotenv from "dotenv";
 import { HttpError } from "../helpers/HttpError.js";
 import { ctrlWrapper } from "../helpers/ctrlWrapper.js";
+import { sendEmail } from "../helpers/sendEmail.js";
 import * as authServices from "../services/authServices.js";
 
+dotenv.config();
+const { BASE_URL } = process.env;
 export const registerUser = ctrlWrapper(async (req, res) => {
   const { name, email } = req.body;
   const ifUserExists = await authServices.emailUnique(email);
@@ -142,6 +146,50 @@ export const updatePassword = ctrlWrapper(async (req, res) => {
 
   res.status(200).json({ message: "Password has been updated" });
 });
+// ======
+export const forgotPassword = ctrlWrapper(async (req, res) => {
+  // const { newPassword } = req.body;
+  const { email } = req.body;
+
+  const user = await authServices.emailUnique(email);
+
+  if (!user) return res.status(200).json({ message: "User not exist" });
+
+  const otp = user.createPasswordResetToken();
+  await user.save();
+
+  // console.log("===========SEND TO EMAIL=========================");
+  // console.log({ otp });
+  // console.log("====================================");
+
+  const verifyEmail = {
+    to: user,
+    subject: "Your one time password",
+    html: `<p>${otp}</p>
+     <p>Якщо ви не реєструвалися на нашому сайті, проігноруйте це повідомлення.</p>
+      <p>Дякуємо за реєстрацію!</p>
+       <p>З повагою, команда додатку Опора</p>`,
+  };
+
+  await sendEmail(verifyEmail);
+
+  user.passwordResetToken = undefined;
+  user.passwordResetTokenExp = undefined;
+
+  res.status(200).json({ message: "Password reset sent by email" });
+});
+
+export const restorePassword = ctrlWrapper(async (req, res) => {
+  await authServices.restorePasswordDB(
+    req.params.otp,
+    req.body.password,
+    req.body.email
+  );
+
+  res.status(200).json({ message: "Password was successfully created" });
+});
+
+// ========
 
 export const updateAvatar = ctrlWrapper(async (req, res) => {
   const { _id } = req.user;
@@ -155,4 +203,10 @@ export const updateAvatar = ctrlWrapper(async (req, res) => {
   await authServices.updateAvatarDB(_id, avatarURL);
 
   res.status(200).json({ message: "Avatar has been updated" });
+});
+
+export const deleteUser = ctrlWrapper(async (req, res) => {
+  await authServices.hideUserDB(req.params.id);
+
+  res.status(204);
 });

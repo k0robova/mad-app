@@ -57,6 +57,18 @@ export const updatePassword = Joi.object({
   }),
 });
 
+export const restorePassword = Joi.object({
+  email: Joi.string().pattern(emailRegex).required().messages({
+    "string.pattern.base": "Incorrect email format",
+    "string.empty": '"email" cannot be an empty field',
+  }),
+  password: Joi.string().required().min(6).messages({
+    "string.empty": '"password" cannot be an empty field',
+    "string.min": '"password" should have a minimum length of 6',
+    "any.required": 'missing required field "password"',
+  }),
+});
+
 export const emailSchema = Joi.object({
   email: Joi.string().pattern(emailRegex).messages({
     "string.pattern.base": "Incorrect email format",
@@ -67,3 +79,5 @@ export const emailSchema = Joi.object({
 export const avatarUpdateSchema = Joi.object({
   avatarURL: Joi.any(),
 });
+
+// export const delete = ???
