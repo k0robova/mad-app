@@ -51,7 +51,7 @@ userSchema.methods.comparePassword = async function (userPassword) {
 };
 // рефакторинг
 userSchema.methods.createPasswordResetToken = function () {
-  const resetToken = nanoid().toString("hex");
+  const resetToken = nanoid(6);
   const salt = bcryptjs.genSaltSync(10);
   this.passwordResetToken = bcryptjs.hashSync(resetToken, salt);
   this.passwordResetTokenExp = Date.now() + 10 * 60 * 1000;

@@ -148,19 +148,16 @@ export const updatePassword = ctrlWrapper(async (req, res) => {
 });
 // ======
 export const forgotPassword = ctrlWrapper(async (req, res) => {
-  // const { newPassword } = req.body;
   const { email } = req.body;
 
   const user = await authServices.emailUnique(email);
 
-  if (!user) return res.status(200).json({ message: "User not exist" });
+  if (!user) {
+    throw HttpError(400, "User not exist");
+  }
 
   const otp = user.createPasswordResetToken();
   await user.save();
-
-  // console.log("===========SEND TO EMAIL=========================");
-  // console.log({ otp });
-  // console.log("====================================");
 
   const verifyEmail = {
     to: user,
