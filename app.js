@@ -7,6 +7,7 @@ import groupRouter from "./routes/groupRouter.js";
 import lessonRouter from "./routes/lessonRouter.js";
 import therapyRouter from "./routes/therapyRouter.js";
 import diaryRouter from "./routes/diaryRouter.js";
+import quoteRouter from "./routes/quoteRouter.js";
 
 dotenv.config();
 
@@ -19,7 +20,7 @@ app.use(express.json());
 app.use("/users", authRouter);
 app.use("/groups", groupRouter);
 app.use("/lessons", lessonRouter);
-// app.use('/quotes', quoteRouter)
+app.use("/quotes", quoteRouter);
 app.use("/therapy", therapyRouter);
 app.use("/diary", diaryRouter);
 

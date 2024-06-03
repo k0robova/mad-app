@@ -18,14 +18,10 @@ export const createLessonSchema = Joi.object({
     .required()
     .label("Image")
     .messages(errorMessageTemplate("image")),
-  videoLesson: Joi.string()
+  audio: Joi.string()
     .required()
     .label("Video")
-    .messages(errorMessageTemplate("Video")),
-  continuance: Joi.string()
-    .required()
-    .label("Continuance")
-    .messages(errorMessageTemplate("Continuance")),
+    .messages(errorMessageTemplate("Audio")),
   status: Joi.string().default("free").label("Status").messages({
     "string.empty": '"Status" field cannot be empty',
   }),
@@ -40,8 +36,7 @@ export const updateLessonSchema = Joi.object({
   description: Joi.string().label("Descpription"),
   type: Joi.string().label("Type"),
   titleImage: Joi.string().label("Image"),
-  videoLesson: Joi.string().label("Video"),
-  continuance: Joi.string().label("Continuance"),
+  audio: Joi.string().label("Video"),
   status: Joi.string().default("free").label("Status").messages({
     "string.empty": '"Status" field cannot be empty',
   }),

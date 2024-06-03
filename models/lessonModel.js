@@ -18,11 +18,7 @@ const lessonSchema = new Schema(
       type: String,
       required: true,
     },
-    videoLesson: {
-      type: String,
-      required: true,
-    },
-    continuance: {
+    audio: {
       type: String,
       required: true,
     },
