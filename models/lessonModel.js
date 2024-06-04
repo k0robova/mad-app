@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 
+const subscription = ["free", "premium"];
 const lessonSchema = new Schema(
   {
     name: {
@@ -10,13 +11,8 @@ const lessonSchema = new Schema(
       type: String,
       required: true,
     },
-    type: {
-      type: String,
-      required: true,
-    },
     titleImage: {
       type: String,
-      required: true,
     },
     audio: {
       type: String,
@@ -24,6 +20,7 @@ const lessonSchema = new Schema(
     },
     status: {
       type: String,
+      enum: subscription,
       default: "free",
     },
     groupId: {

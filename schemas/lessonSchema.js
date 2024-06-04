@@ -10,21 +10,20 @@ export const createLessonSchema = Joi.object({
     .required()
     .label("Descpription")
     .messages(errorMessageTemplate("Description")),
-  type: Joi.string()
-    .required()
-    .label("Type")
-    .messages(errorMessageTemplate("Type")),
   titleImage: Joi.string()
-    .required()
     .label("Image")
-    .messages(errorMessageTemplate("image")),
+    .messages(errorMessageTemplate("Image")),
   audio: Joi.string()
     .required()
-    .label("Video")
+    .label("Audio")
     .messages(errorMessageTemplate("Audio")),
-  status: Joi.string().default("free").label("Status").messages({
-    "string.empty": '"Status" field cannot be empty',
-  }),
+  status: Joi.string()
+    .valid("free", "premium")
+    .default("free")
+    .label("Status")
+    .messages({
+      "string.empty": '"Status" field cannot be empty',
+    }),
   groupId: Joi.string()
     .required()
     .label("Id")
