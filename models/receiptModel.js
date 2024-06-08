@@ -17,7 +17,7 @@ const receiptSchema = new Schema(
       default: false,
     },
     createdAt: {
-      type: Data,
+      type: Date,
       default: Date.now,
     },
   },
