@@ -10,10 +10,6 @@ export const createDiarySchema = Joi.object({
     .required()
     .label("Description")
     .messages(errorMessageTemplate("Description")),
-  owner: Joi.string()
-    .required()
-    .label("Id")
-    .messages(errorMessageTemplate("Id")),
 });
 
 export const updateDiarySchema = Joi.object({
